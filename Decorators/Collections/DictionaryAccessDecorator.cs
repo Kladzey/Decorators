@@ -112,7 +112,6 @@ namespace Kladzey.Decorators.Collections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            EnsureEnabled();
             return ((IEnumerable)_dictionary).GetEnumerator();
         }
 

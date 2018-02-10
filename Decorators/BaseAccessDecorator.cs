@@ -20,7 +20,7 @@ namespace Kladzey.Decorators
         {
             if (!_isEnabledFunc())
             {
-                throw new InvalidOperationException("Access to dictionary is disabled");
+                throw new InvalidOperationException("Access to object is disabled.");
             }
         }
     }

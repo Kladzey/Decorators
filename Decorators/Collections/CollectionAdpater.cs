@@ -48,6 +48,13 @@ namespace Kladzey.Decorators.Collections
 
         public void Clear()
         {
+            if (_disposeOnRemove)
+            {
+                foreach (var item in _collection.OfType<IDisposable>())
+                {
+                    item.Dispose();
+                }
+            }
             _collection.Clear();
         }
 

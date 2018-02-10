@@ -68,7 +68,7 @@ namespace Kladzey.Decorators.Collections
             }
             else if (_dictionary.ContainsKey(key))
             {
-                throw new ArgumentException("Duplicate key", nameof(key));
+                throw new ArgumentException("Duplicate key.", nameof(key));
             }
         }
 

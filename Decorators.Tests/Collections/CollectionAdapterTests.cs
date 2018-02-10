@@ -10,7 +10,7 @@ namespace Decorators.Tests.Collections
 {
     public class CollectionAdapterTests
     {
-        private readonly IFixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new Fixture();
 
         [Fact]
         public void ClearTest()
