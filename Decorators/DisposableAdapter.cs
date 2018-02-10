@@ -12,8 +12,6 @@ namespace Kladzey.Decorators
             _onDispose = onDispose ?? throw new ArgumentNullException(nameof(onDispose));
         }
 
-        public delegate void DisposeDelegate(bool disposing);
-
         public T Value { get; }
 
         protected override void Dispose(bool disposing)
