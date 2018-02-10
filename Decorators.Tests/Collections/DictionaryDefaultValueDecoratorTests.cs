@@ -6,11 +6,26 @@ using FluentAssertions;
 using Kladzey.Decorators.Collections;
 using Xunit;
 
-namespace Decorators.Tests.Collections
+namespace Kladzey.Decorators.Tests.Collections
 {
     public class DictionaryDefaultValueDecoratorTests
     {
         private readonly Fixture _fixture = new Fixture();
+
+        [Fact]
+        public void AddOfDefaultValueForExistingKeyTest()
+        {
+            // Given
+            var defaultValue = _fixture.Create<string>();
+            var dictionary = _fixture.Create<Dictionary<int, string>>();
+            var sut = new DictionaryDefaultValueDecorator<int, string>(dictionary, EqualityComparer<string>.Default, defaultValue);
+
+            // When
+            sut.Invoking(s => s.Add(dictionary.Keys.First(), defaultValue))
+                .Should()
+                .Throw<ArgumentException>()
+                .Where(e => e.ParamName == "key");
+        }
 
         [Fact]
         public void GetNotExistingValueTest()
@@ -45,21 +60,6 @@ namespace Decorators.Tests.Collections
 
             // Then
             dictionary.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void AddOfDefaultValueForExistingKeyTest()
-        {
-            // Given
-            var defaultValue = _fixture.Create<string>();
-            var dictionary = _fixture.Create<Dictionary<int, string>>();
-            var sut = new DictionaryDefaultValueDecorator<int, string>(dictionary, EqualityComparer<string>.Default, defaultValue);
-
-            // When
-            sut.Invoking(s => s.Add(dictionary.Keys.First(), defaultValue))
-                .Should()
-                .Throw<ArgumentException>()
-                .Where(e => e.ParamName == "key");
         }
     }
 }

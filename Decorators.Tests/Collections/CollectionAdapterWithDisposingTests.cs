@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using Kladzey.Decorators;
 using Kladzey.Decorators.Collections;
 using Moq;
 using Xunit;
 
-namespace Decorators.Tests.Collections
+namespace Kladzey.Decorators.Tests.Collections
 {
     public class CollectionAdapterWithDisposingTests
     {

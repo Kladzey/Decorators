@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoFixture;
-using Decorators.Tests.TestUtils;
 using FluentAssertions;
 using Kladzey.Decorators.Collections;
+using Kladzey.Decorators.Tests.TestUtils;
 using Xunit;
 
-namespace Decorators.Tests.Collections
+namespace Kladzey.Decorators.Tests.Collections
 {
     public class DictionaryAccessDecoratorTests
     {

@@ -6,7 +6,7 @@ using FluentAssertions;
 using Kladzey.Decorators.Collections;
 using Xunit;
 
-namespace Decorators.Tests.Collections
+namespace Kladzey.Decorators.Tests.Collections
 {
     public class CollectionAdapterTests
     {

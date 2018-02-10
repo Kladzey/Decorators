@@ -1,9 +1,8 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using Kladzey.Decorators;
 using Xunit;
 
-namespace Decorators.Tests
+namespace Kladzey.Decorators.Tests
 {
     public class DisposableAdapterTests
     {
