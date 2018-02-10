@@ -9,12 +9,12 @@ namespace Kladzey.Decorators.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    public class DictionaryKeysCollectionAdapter<TKey, TValue> : ICollection<TKey>
+    public class DictionaryKeysToCollectionAdapter<TKey, TValue> : ICollection<TKey>
     {
         protected readonly IDictionary<TKey, TValue> Dictionary;
         private readonly Func<TKey, TValue> _valueFabric;
 
-        public DictionaryKeysCollectionAdapter(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> valueFabric)
+        public DictionaryKeysToCollectionAdapter(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> valueFabric)
         {
             Dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
             _valueFabric = valueFabric ?? throw new ArgumentNullException(nameof(valueFabric));

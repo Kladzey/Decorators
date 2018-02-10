@@ -70,7 +70,7 @@ namespace Decorators.Tests.Collections
             internalCollection.Should().Equal(new[] { (1, "1"), (3, "3"), (2, "2"), (5, "5") });
         }
 
-        private static CollectionAdpater<(int Value, string ValueString), int> CreateSut(List<(int Value, string ValueString)> internalCollection)
+        private static CollectionAdpater<(int Value, string ValueString), int> CreateSut(ICollection<(int Value, string ValueString)> internalCollection)
         {
             return new CollectionAdpater<(int Value, string ValueString), int>(internalCollection, i => i.Value, v => (v, v.ToString(CultureInfo.InvariantCulture)));
         }
