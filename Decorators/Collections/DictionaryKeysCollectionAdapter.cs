@@ -4,20 +4,49 @@ using System.Collections.Generic;
 
 namespace Kladzey.Decorators.Collections
 {
+    /// <summary>
+    /// More specified version of <see cref="CollectionAdpater{TInternal, TExternal}"/> that exposes dictionary keys.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     public class DictionaryKeysCollectionAdapter<TKey, TValue> : ICollection<TKey>
     {
-        private readonly IDictionary<TKey, TValue> _collectionImplementation;
+        protected readonly IDictionary<TKey, TValue> Dictionary;
         private readonly Func<TKey, TValue> _valueFabric;
 
-        public DictionaryKeysCollectionAdapter(IDictionary<TKey, TValue> collectionImplementation, Func<TKey, TValue> valueFabric)
+        public DictionaryKeysCollectionAdapter(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> valueFabric)
         {
-            _collectionImplementation = collectionImplementation ?? throw new ArgumentNullException(nameof(collectionImplementation));
+            Dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
             _valueFabric = valueFabric ?? throw new ArgumentNullException(nameof(valueFabric));
+        }
+
+        public int Count => Dictionary.Count;
+
+        public bool IsReadOnly => Dictionary.IsReadOnly;
+
+        public void Add(TKey item)
+        {
+            Dictionary.Add(item, _valueFabric(item));
+        }
+
+        public virtual void Clear()
+        {
+            Dictionary.Clear();
+        }
+
+        public bool Contains(TKey item)
+        {
+            return Dictionary.ContainsKey(item);
+        }
+
+        public void CopyTo(TKey[] array, int arrayIndex)
+        {
+            Dictionary.Keys.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<TKey> GetEnumerator()
         {
-            return _collectionImplementation.Keys.GetEnumerator();
+            return Dictionary.Keys.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -25,33 +54,9 @@ namespace Kladzey.Decorators.Collections
             return GetEnumerator();
         }
 
-        public void Add(TKey item)
+        public virtual bool Remove(TKey item)
         {
-            _collectionImplementation.Add(item, _valueFabric(item));
+            return Dictionary.Remove(item);
         }
-
-        public void Clear()
-        {
-            _collectionImplementation.Clear();
-        }
-
-        public bool Contains(TKey item)
-        {
-            return _collectionImplementation.ContainsKey(item);
-        }
-
-        public void CopyTo(TKey[] array, int arrayIndex)
-        {
-            _collectionImplementation.Keys.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(TKey item)
-        {
-            return _collectionImplementation.Remove(item);
-        }
-
-        public int Count => _collectionImplementation.Count;
-
-        public bool IsReadOnly => _collectionImplementation.IsReadOnly;
     }
 }

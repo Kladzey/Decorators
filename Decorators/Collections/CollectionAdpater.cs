@@ -12,55 +12,45 @@ namespace Kladzey.Decorators.Collections
     /// <typeparam name="TExternal">The type of exposed items.</typeparam>
     public class CollectionAdpater<TInternal, TExternal> : ICollection<TExternal>
     {
-        private readonly ICollection<TInternal> _collection;
-        private readonly IEqualityComparer<TExternal> _comparer;
-        private readonly bool _disposeOnRemove;
-        private readonly Func<TInternal, TExternal> _externalGetter;
-        private readonly Func<TExternal, TInternal> _internalFabric;
+        protected readonly ICollection<TInternal> Collection;
+        protected readonly IEqualityComparer<TExternal> Comparer;
+        protected readonly Func<TInternal, TExternal> ExternalGetter;
+        protected readonly Func<TExternal, TInternal> InternalFabric;
 
         public CollectionAdpater(
             ICollection<TInternal> collection,
             Func<TInternal, TExternal> externalGetter,
             Func<TExternal, TInternal> internalFabric,
-            IEqualityComparer<TExternal> equalityComparer,
-            bool disposeOnRemove)
+            IEqualityComparer<TExternal> equalityComparer)
         {
-            _collection = collection ?? throw new ArgumentNullException(nameof(collection));
-            _externalGetter = externalGetter ?? throw new ArgumentNullException(nameof(externalGetter));
-            _internalFabric = internalFabric ?? throw new ArgumentNullException(nameof(internalFabric));
-            _comparer = equalityComparer ?? throw new ArgumentNullException(nameof(equalityComparer));
-            _disposeOnRemove = disposeOnRemove;
+            Collection = collection ?? throw new ArgumentNullException(nameof(collection));
+            ExternalGetter = externalGetter ?? throw new ArgumentNullException(nameof(externalGetter));
+            InternalFabric = internalFabric ?? throw new ArgumentNullException(nameof(internalFabric));
+            Comparer = equalityComparer ?? throw new ArgumentNullException(nameof(equalityComparer));
         }
 
-        public CollectionAdpater(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric, bool disposeOnRemove)
-            : this(collection, externalGetter, internalFabric, EqualityComparer<TExternal>.Default, disposeOnRemove)
+        public CollectionAdpater(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric)
+            : this(collection, externalGetter, internalFabric, EqualityComparer<TExternal>.Default)
         {
         }
 
-        public int Count => _collection.Count;
+        public int Count => Collection.Count;
 
-        public bool IsReadOnly => _collection.IsReadOnly;
+        public bool IsReadOnly => Collection.IsReadOnly;
 
         public void Add(TExternal item)
         {
-            _collection.Add(_internalFabric(item));
+            Collection.Add(InternalFabric(item));
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
-            if (_disposeOnRemove)
-            {
-                foreach (var item in _collection.OfType<IDisposable>())
-                {
-                    item.Dispose();
-                }
-            }
-            _collection.Clear();
+            Collection.Clear();
         }
 
         public bool Contains(TExternal item)
         {
-            return _collection.Any(i => _comparer.Equals(_externalGetter(i), item));
+            return Collection.Any(i => Comparer.Equals(ExternalGetter(i), item));
         }
 
         public void CopyTo(TExternal[] array, int arrayIndex)
@@ -69,21 +59,21 @@ namespace Kladzey.Decorators.Collections
             {
                 throw new ArgumentNullException(nameof(array));
             }
-            if (arrayIndex < 0 || arrayIndex > array.Length || _collection.Count + arrayIndex > array.Length)
+            if (arrayIndex < 0 || arrayIndex > array.Length || Collection.Count + arrayIndex > array.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex));
             }
             var i = arrayIndex;
-            foreach (var item in _collection)
+            foreach (var item in Collection)
             {
-                array[i] = _externalGetter(item);
+                array[i] = ExternalGetter(item);
                 ++i;
             }
         }
 
         public IEnumerator<TExternal> GetEnumerator()
         {
-            return _collection.Select(_externalGetter).GetEnumerator();
+            return Collection.Select(ExternalGetter).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -91,23 +81,17 @@ namespace Kladzey.Decorators.Collections
             return GetEnumerator();
         }
 
-        public bool Remove(TExternal item)
+        public virtual bool Remove(TExternal item)
         {
-            var internalItemList = _collection
-                .Where(i => _comparer.Equals(_externalGetter(i), item))
+            var internalItemList = Collection
+                .Where(i => Comparer.Equals(ExternalGetter(i), item))
                 .Take(1)
                 .ToList();
             if (internalItemList.Count == 0)
             {
                 return false;
             }
-            var internalItem = internalItemList[0];
-            var removeResult = _collection.Remove(internalItem);
-            if (removeResult && _disposeOnRemove && internalItem is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
-            return removeResult;
+            return Collection.Remove(internalItemList[0]);
         }
     }
 }

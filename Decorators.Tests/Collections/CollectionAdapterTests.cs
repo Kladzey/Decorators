@@ -72,7 +72,7 @@ namespace Decorators.Tests.Collections
 
         private static CollectionAdpater<(int Value, string ValueString), int> CreateSut(List<(int Value, string ValueString)> internalCollection)
         {
-            return new CollectionAdpater<(int Value, string ValueString), int>(internalCollection, i => i.Value, v => (v, v.ToString(CultureInfo.InvariantCulture)), false);
+            return new CollectionAdpater<(int Value, string ValueString), int>(internalCollection, i => i.Value, v => (v, v.ToString(CultureInfo.InvariantCulture)));
         }
     }
 }

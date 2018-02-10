@@ -4,9 +4,9 @@ namespace Kladzey.Decorators
 {
     public class DisposableAdapter<T> : BaseDisposable, IDisposableValue<T>
     {
-        private readonly Action _onDispose;
+        private readonly Action<T> _onDispose;
 
-        public DisposableAdapter(T value, Action onDispose)
+        public DisposableAdapter(T value, Action<T> onDispose)
         {
             Value = value;
             _onDispose = onDispose ?? throw new ArgumentNullException(nameof(onDispose));
@@ -22,7 +22,7 @@ namespace Kladzey.Decorators
             {
                 return;
             }
-            _onDispose();
+            _onDispose(Value);
         }
     }
 }
