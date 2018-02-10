@@ -6,7 +6,7 @@ using System.Linq;
 namespace Kladzey.Decorators.Collections
 {
     /// <summary>
-    ///  This adapter allows to expose one type collection as other type collection.
+    /// This adapter allows to expose one type collection as other type collection.
     /// </summary>
     /// <typeparam name="TInternal">The type of items in internal collection.</typeparam>
     /// <typeparam name="TExternal">The type of exposed items.</typeparam>
