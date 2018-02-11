@@ -24,6 +24,20 @@ namespace Kladzey.Decorators.Collections
         {
         }
 
+        public override void Add(TExternal item)
+        {
+            var internalValue = InternalFabric(item);
+            try
+            {
+                Collection.Add(internalValue);
+            }
+            catch
+            {
+                internalValue?.Dispose();
+                throw;
+            }
+        }
+
         public override void Clear()
         {
             foreach (var item in Collection)

@@ -38,6 +38,8 @@ namespace Kladzey.Decorators.Tests.Collections
                 sut.Invoking(s => s.Remove(_fixture.Create<KeyValuePair<int, string>>())),
                 sut.Invoking(s => s.TryGetValue(_fixture.Create<int>(), out var value))
             };
+
+            // Then
             foreach (var action in actions)
             {
                 action.Should().Throw<InvalidOperationException>().WithMessage("Access to object is disabled.");

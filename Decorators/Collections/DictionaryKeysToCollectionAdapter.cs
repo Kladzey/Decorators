@@ -12,21 +12,21 @@ namespace Kladzey.Decorators.Collections
     public class DictionaryKeysToCollectionAdapter<TKey, TValue> : ICollection<TKey>
     {
         protected readonly IDictionary<TKey, TValue> Dictionary;
-        private readonly Func<TKey, TValue> _valueFabric;
+        protected readonly Func<TKey, TValue> ValueFabric;
 
         public DictionaryKeysToCollectionAdapter(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> valueFabric)
         {
             Dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
-            _valueFabric = valueFabric ?? throw new ArgumentNullException(nameof(valueFabric));
+            ValueFabric = valueFabric ?? throw new ArgumentNullException(nameof(valueFabric));
         }
 
         public int Count => Dictionary.Count;
 
         public bool IsReadOnly => Dictionary.IsReadOnly;
 
-        public void Add(TKey item)
+        public virtual void Add(TKey item)
         {
-            Dictionary.Add(item, _valueFabric(item));
+            Dictionary.Add(item, ValueFabric(item));
         }
 
         public virtual void Clear()

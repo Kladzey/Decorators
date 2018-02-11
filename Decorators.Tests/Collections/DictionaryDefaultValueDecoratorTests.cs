@@ -21,10 +21,10 @@ namespace Kladzey.Decorators.Tests.Collections
             var sut = new DictionaryDefaultValueDecorator<int, string>(dictionary, EqualityComparer<string>.Default, defaultValue);
 
             // When
-            sut.Invoking(s => s.Add(dictionary.Keys.First(), defaultValue))
-                .Should()
-                .Throw<ArgumentException>()
-                .Where(e => e.ParamName == "key");
+            var action = sut.Invoking(s => s.Add(dictionary.Keys.First(), defaultValue));
+
+            // Then
+            action.Should().Throw<ArgumentException>().Where(e => e.ParamName == "key");
         }
 
         [Fact]

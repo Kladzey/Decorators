@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoFixture;
 using FluentAssertions;
 using Kladzey.Decorators.Collections;
 using Moq;
@@ -9,6 +11,32 @@ namespace Kladzey.Decorators.Tests.Collections
 {
     public class CollectionAdapterWithDisposingTests
     {
+        private readonly Fixture _fixture = new Fixture();
+
+        [Fact]
+        public void AddIsFailedTest()
+        {
+            // Given
+            var mock = new Mock<IDisposableValue<int>>();
+
+            var exception = _fixture.Create<Exception>();
+
+            var internalCollectionMock = new Mock<ICollection<IDisposableValue<int>>>();
+            internalCollectionMock.Setup(c => c.Add(It.IsAny<IDisposableValue<int>>())).Throws(exception);
+
+            var sut = new CollectionAdpaterWithDisposing<IDisposableValue<int>, int>(
+                internalCollectionMock.Object,
+                i => i.Value,
+                v => mock.Object);
+
+            // When
+            var thrownException = sut.Invoking(s => s.Add(_fixture.Create<int>())).Should().Throw<Exception>().Which;
+
+            // Then
+            thrownException.Should().BeSameAs(exception);
+            mock.Verify(v => v.Dispose());
+        }
+
         [Fact]
         public void ClearTest()
         {

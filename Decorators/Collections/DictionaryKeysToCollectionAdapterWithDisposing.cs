@@ -14,6 +14,20 @@ namespace Kladzey.Decorators.Collections
         {
         }
 
+        public override void Add(TKey item)
+        {
+            var value = ValueFabric(item);
+            try
+            {
+                Dictionary.Add(item, value);
+            }
+            catch
+            {
+                value?.Dispose();
+                throw;
+            }
+        }
+
         public override void Clear()
         {
             foreach (var item in Dictionary.Values)

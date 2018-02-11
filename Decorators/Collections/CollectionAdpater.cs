@@ -38,7 +38,7 @@ namespace Kladzey.Decorators.Collections
 
         public bool IsReadOnly => Collection.IsReadOnly;
 
-        public void Add(TExternal item)
+        public virtual void Add(TExternal item)
         {
             Collection.Add(InternalFabric(item));
         }
