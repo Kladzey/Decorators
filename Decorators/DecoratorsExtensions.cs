@@ -67,7 +67,7 @@ namespace Kladzey.Decorators
 
         public static IReadOnlyDictionary<TKey, TValue> WrapToReadOnlyDictionary<TKey, TValue, TValueInternal>(this IDictionary<TKey, TValueInternal> dictionary, Func<TValueInternal, TValue> externalGetter)
         {
-            return new ReadOnlyDictionaryValuesAdpater<TKey, TValue, TValueInternal>(dictionary.AsReadOnlyDictionay(), externalGetter);
+            return new ReadOnlyDictionaryValuesAdpater<TKey, TValue, TValueInternal>(dictionary, externalGetter);
         }
 
         public static IDictionary<TKey, TValue> WrapWithAccessControl<TKey, TValue>(
