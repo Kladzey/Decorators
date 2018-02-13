@@ -10,7 +10,8 @@ namespace Kladzey.Decorators.Collections
         private readonly IDictionary<TKey, TValue> _dictionary;
         private readonly Func<TKey, TValue, bool> _validationFunc;
 
-        public DictionaryValidationDecorator(IDictionary<TKey, TValue> dictionary,
+        public DictionaryValidationDecorator(
+            IDictionary<TKey, TValue> dictionary,
             Func<TKey, TValue, bool> validationFunc)
         {
             _dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));

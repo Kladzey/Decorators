@@ -13,7 +13,7 @@ namespace Kladzey.Decorators
         }
 
         public static ICollection<TKey> WrapKeysToCollection<TKey, TValue>(
-                    this IDictionary<TKey, TValue> dictionary,
+            this IDictionary<TKey, TValue> dictionary,
             Func<TKey, TValue> valueFabric)
         {
             return new DictionaryKeysToCollectionAdapter<TKey, TValue>(dictionary, valueFabric);
@@ -27,7 +27,7 @@ namespace Kladzey.Decorators
         }
 
         public static ICollection<TExternal> WrapToCollection<TInternal, TExternal>(
-                    this ICollection<TInternal> collection,
+            this ICollection<TInternal> collection,
             Func<TInternal, TExternal> externalGetter,
             Func<TExternal, TInternal> internalFabric)
         {
@@ -71,7 +71,7 @@ namespace Kladzey.Decorators
         }
 
         public static IDictionary<TKey, TValue> WrapWithAccessControl<TKey, TValue>(
-                            this IDictionary<TKey, TValue> dictionary,
+            this IDictionary<TKey, TValue> dictionary,
             Func<bool> isEnabledFunc)
         {
             return new DictionaryAccessDecorator<TKey, TValue>(dictionary, isEnabledFunc);
@@ -80,6 +80,11 @@ namespace Kladzey.Decorators
         public static IDictionary<TKey, TValue> WrapWithDefaultValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
         {
             return new DictionaryDefaultValueDecorator<TKey, TValue>(dictionary);
+        }
+
+        public static IDictionary<TKey, TValue> WrapWithValidation<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<TKey, TValue, bool> validationFunc)
+        {
+            return new DictionaryValidationDecorator<TKey, TValue>(dictionary, validationFunc);
         }
     }
 }
