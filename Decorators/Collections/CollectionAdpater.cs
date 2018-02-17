@@ -10,7 +10,7 @@ namespace Kladzey.Decorators.Collections
     /// </summary>
     /// <typeparam name="TInternal">The type of items in internal collection.</typeparam>
     /// <typeparam name="TExternal">The type of exposed items.</typeparam>
-    public class CollectionAdpater<TInternal, TExternal> : ICollection<TExternal>
+    public class CollectionAdpater<TInternal, TExternal> : ICollection<TExternal>, IReadOnlyCollection<TExternal>
     {
         protected readonly ICollection<TInternal> Collection;
         protected readonly IEqualityComparer<TExternal> Comparer;

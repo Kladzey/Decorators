@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Kladzey.Decorators.Collections
 {
-    public class DictionaryDefaultValueDecorator<TKey, TValue> : IDictionary<TKey, TValue>
+    public class DictionaryDefaultValueDecorator<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         private readonly IEqualityComparer<TValue> _comparer;
         private readonly TValue _defaultValue;
@@ -35,7 +35,11 @@ namespace Kladzey.Decorators.Collections
 
         public bool IsReadOnly => _dictionary.IsReadOnly;
 
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+
         public ICollection<TKey> Keys => _dictionary.Keys;
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
         public ICollection<TValue> Values => _dictionary.Values;
 

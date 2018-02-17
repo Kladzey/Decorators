@@ -9,7 +9,7 @@ namespace Kladzey.Decorators.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    public class DictionaryAccessDecorator<TKey, TValue> : BaseAccessDecorator, IDictionary<TKey, TValue>
+    public class DictionaryAccessDecorator<TKey, TValue> : BaseAccessDecorator, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _dictionary;
 
@@ -45,6 +45,8 @@ namespace Kladzey.Decorators.Collections
             }
         }
 
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+
         public ICollection<TValue> Values
         {
             get
@@ -53,6 +55,8 @@ namespace Kladzey.Decorators.Collections
                 return _dictionary.Values;
             }
         }
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
         public TValue this[TKey key]
         {

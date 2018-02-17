@@ -5,7 +5,12 @@ using System.Linq;
 
 namespace Kladzey.Decorators.Collections
 {
-    public class DictionaryValidationDecorator<TKey, TValue> : IDictionary<TKey, TValue>
+    /// <summary>
+    /// Allows to forbid adding of invalid key/value pairs to dictionary.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+    public class DictionaryValidationDecorator<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _dictionary;
         private readonly Func<TKey, TValue, bool> _validationFunc;
@@ -28,36 +33,31 @@ namespace Kladzey.Decorators.Collections
 
         public ICollection<TKey> Keys => _dictionary.Keys;
 
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+
         public ICollection<TValue> Values => _dictionary.Values;
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
         public TValue this[TKey key]
         {
             get => _dictionary[key];
             set
             {
-                if (!_validationFunc(key, value))
-                {
-                    throw new ArgumentException(nameof(value));
-                }
+                EnsureIsValid(key, value);
                 _dictionary[key] = value;
             }
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            if (!_validationFunc(item.Key, item.Value))
-            {
-                throw new ArgumentException(nameof(item));
-            }
+            EnsureIsValid(item.Key, item.Value);
             _dictionary.Add(item);
         }
 
         public void Add(TKey key, TValue value)
         {
-            if (!_validationFunc(key, value))
-            {
-                throw new ArgumentException(nameof(value));
-            }
+            EnsureIsValid(key, value);
             _dictionary.Add(key, value);
         }
 
@@ -104,6 +104,14 @@ namespace Kladzey.Decorators.Collections
         public bool TryGetValue(TKey key, out TValue value)
         {
             return _dictionary.TryGetValue(key, out value);
+        }
+
+        private void EnsureIsValid(TKey key, TValue value)
+        {
+            if (!_validationFunc(key, value))
+            {
+                throw new ArgumentException("Key/value pair is not valid.");
+            }
         }
     }
 }
