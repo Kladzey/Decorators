@@ -2,24 +2,20 @@
 
 namespace Kladzey.Decorators
 {
-    public class DisposableAdapter<T> : BaseDisposable, IDisposableValue<T>
+    public sealed class DisposableAdapter<TValue> : IDisposable
     {
-        private readonly Action<T> _onDispose;
+        private readonly Action<TValue> _onDispose;
 
-        public DisposableAdapter(T value, Action<T> onDispose)
+        public DisposableAdapter(TValue value, Action<TValue> onDispose)
         {
             Value = value;
             _onDispose = onDispose ?? throw new ArgumentNullException(nameof(onDispose));
         }
 
-        public T Value { get; }
+        public TValue Value { get; }
 
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (!disposing)
-            {
-                return;
-            }
             _onDispose(Value);
         }
     }

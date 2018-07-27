@@ -86,5 +86,10 @@ namespace Kladzey.Decorators
         {
             return new DictionaryValidationDecorator<TKey, TValue>(dictionary, validationFunc);
         }
+
+        public static DisposableAdapter<TValue> WrapToDisposable<TValue>(this TValue value, Action<TValue> onDispose)
+        {
+            return new DisposableAdapter<TValue>(value, onDispose);
+        }
     }
 }
