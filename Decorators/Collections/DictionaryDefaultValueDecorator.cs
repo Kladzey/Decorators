@@ -27,7 +27,7 @@ namespace Kladzey.Decorators.Collections
         }
 
         public DictionaryDefaultValueDecorator(IDictionary<TKey, TValue> dictionary) :
-            this(dictionary, EqualityComparer<TValue>.Default, default(TValue))
+            this(dictionary, EqualityComparer<TValue>.Default, default)
         {
         }
 

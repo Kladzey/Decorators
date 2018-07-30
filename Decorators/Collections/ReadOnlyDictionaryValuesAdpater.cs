@@ -102,7 +102,7 @@ namespace Kladzey.Decorators.Collections
         {
             if (!_dictionary.TryGetValue(key, out var internalValue))
             {
-                value = default(TValue);
+                value = default;
                 return false;
             }
             value = _externalGetter(internalValue);
