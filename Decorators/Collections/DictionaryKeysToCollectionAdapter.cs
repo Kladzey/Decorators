@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Kladzey.Decorators.Collections
 {
     /// <summary>
-    /// More specified version of <see cref="CollectionAdpater{TInternal, TExternal}"/> that exposes dictionary keys.
+    /// More specified version of <see cref="CollectionAdapter{TInternal,TExternal}"/> that exposes dictionary keys.
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>

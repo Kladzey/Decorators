@@ -5,13 +5,13 @@ using System.Linq;
 namespace Kladzey.Decorators.Collections
 {
     /// <summary>
-    /// The variation of <see cref="CollectionAdpater{TInternal, TExternal}"/> that disposes values on remove.
+    /// The variation of <see cref="CollectionAdapter{TInternal,TExternal}"/> that disposes values on remove.
     /// </summary>
     /// <typeparam name="TInternal">The <see cref="IDisposable"/> type of items in internal collection.</typeparam>
     /// <typeparam name="TExternal">The type of exposed items.</typeparam>
-    public class CollectionAdpaterWithDisposing<TInternal, TExternal> : CollectionAdpater<TInternal, TExternal> where TInternal : IDisposable
+    public class CollectionAdapterWithDisposing<TInternal, TExternal> : CollectionAdapter<TInternal, TExternal> where TInternal : IDisposable
     {
-        public CollectionAdpaterWithDisposing(
+        public CollectionAdapterWithDisposing(
             ICollection<TInternal> collection,
             Func<TInternal, TExternal> externalGetter,
             Func<TExternal, TInternal> internalFabric,
@@ -19,7 +19,7 @@ namespace Kladzey.Decorators.Collections
         {
         }
 
-        public CollectionAdpaterWithDisposing(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric)
+        public CollectionAdapterWithDisposing(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric)
            : this(collection, externalGetter, internalFabric, EqualityComparer<TExternal>.Default)
         {
         }

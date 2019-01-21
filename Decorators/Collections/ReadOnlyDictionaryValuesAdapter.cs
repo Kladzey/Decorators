@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Kladzey.Decorators.Collections
 {
-    public class ReadOnlyDictionaryValuesAdpater<TKey, TValue, TValueInternal> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
+    public class ReadOnlyDictionaryValuesAdapter<TKey, TValue, TValueInternal> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         private readonly Func<TValueInternal, TValue> _externalGetter;
         private readonly IDictionary<TKey, TValueInternal> _dictionary;
 
-        public ReadOnlyDictionaryValuesAdpater(
+        public ReadOnlyDictionaryValuesAdapter(
             IDictionary<TKey, TValueInternal> dictionary,
             Func<TValueInternal, TValue> externalGetter)
         {

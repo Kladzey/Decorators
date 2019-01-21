@@ -24,7 +24,7 @@ namespace Kladzey.Decorators.Tests.Collections
             var internalCollectionMock = new Mock<ICollection<IDisposableValue<int>>>();
             internalCollectionMock.Setup(c => c.Add(It.IsAny<IDisposableValue<int>>())).Throws(exception);
 
-            var sut = new CollectionAdpaterWithDisposing<IDisposableValue<int>, int>(
+            var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollectionMock.Object,
                 i => i.Value,
                 v => mock.Object);
@@ -50,7 +50,7 @@ namespace Kladzey.Decorators.Tests.Collections
                 })
                 .ToList();
             var internalCollection = mocks.Select(m => m.Object).ToList();
-            var sut = new CollectionAdpaterWithDisposing<IDisposableValue<int>, int>(
+            var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollection,
                 i => i.Value,
                 v =>
@@ -82,7 +82,7 @@ namespace Kladzey.Decorators.Tests.Collections
                 })
                 .ToList();
             var internalCollection = mocks.Select(m => m.Object).ToList();
-            var sut = new CollectionAdpaterWithDisposing<IDisposableValue<int>, int>(
+            var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollection,
                 i => i.Value,
                 v =>

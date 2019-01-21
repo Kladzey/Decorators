@@ -10,14 +10,14 @@ namespace Kladzey.Decorators.Collections
     /// </summary>
     /// <typeparam name="TInternal">The type of items in internal collection.</typeparam>
     /// <typeparam name="TExternal">The type of exposed items.</typeparam>
-    public class CollectionAdpater<TInternal, TExternal> : ICollection<TExternal>, IReadOnlyCollection<TExternal>
+    public class CollectionAdapter<TInternal, TExternal> : ICollection<TExternal>, IReadOnlyCollection<TExternal>
     {
         protected readonly ICollection<TInternal> Collection;
         protected readonly IEqualityComparer<TExternal> Comparer;
         protected readonly Func<TInternal, TExternal> ExternalGetter;
         protected readonly Func<TExternal, TInternal> InternalFabric;
 
-        public CollectionAdpater(
+        public CollectionAdapter(
             ICollection<TInternal> collection,
             Func<TInternal, TExternal> externalGetter,
             Func<TExternal, TInternal> internalFabric,
@@ -29,7 +29,7 @@ namespace Kladzey.Decorators.Collections
             Comparer = equalityComparer ?? throw new ArgumentNullException(nameof(equalityComparer));
         }
 
-        public CollectionAdpater(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric)
+        public CollectionAdapter(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric)
             : this(collection, externalGetter, internalFabric, EqualityComparer<TExternal>.Default)
         {
         }

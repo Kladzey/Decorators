@@ -66,13 +66,13 @@ namespace Kladzey.Decorators.Tests.Collections
             notContainsResult.Should().BeFalse();
             removedResult.Should().BeTrue();
             notRemovedResult.Should().BeFalse();
-            sut.Should().Equal(new[] { 1, 3, 2, 5 });
-            internalCollection.Should().Equal(new[] { (1, "1"), (3, "3"), (2, "2"), (5, "5") });
+            sut.Should().Equal(1, 3, 2, 5);
+            internalCollection.Should().Equal((1, "1"), (3, "3"), (2, "2"), (5, "5"));
         }
 
-        private static CollectionAdpater<(int Value, string ValueString), int> CreateSut(ICollection<(int Value, string ValueString)> internalCollection)
+        private static CollectionAdapter<(int Value, string ValueString), int> CreateSut(ICollection<(int Value, string ValueString)> internalCollection)
         {
-            return new CollectionAdpater<(int Value, string ValueString), int>(internalCollection, i => i.Value, v => (v, v.ToString(CultureInfo.InvariantCulture)));
+            return new CollectionAdapter<(int Value, string ValueString), int>(internalCollection, i => i.Value, v => (v, v.ToString(CultureInfo.InvariantCulture)));
         }
     }
 }
