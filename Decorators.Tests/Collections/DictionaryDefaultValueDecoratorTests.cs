@@ -1,62 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using AutoFixture;
 using FluentAssertions;
 using Kladzey.Decorators.Collections;
+using Moq;
 using Xunit;
 
 namespace Kladzey.Decorators.Tests.Collections
 {
     public class DictionaryDefaultValueDecoratorTests
     {
-        private readonly Fixture _fixture = new Fixture();
-
         [Fact]
-        public void AddOfDefaultValueForExistingKeyTest()
+        public void AddShouldNotAddDefaultValueButAnywayShouldThrowExceptionIfItemExistTest()
         {
             // Given
-            var defaultValue = _fixture.Create<string>();
-            var dictionary = _fixture.Create<Dictionary<int, string>>();
-            var sut = new DictionaryDefaultValueDecorator<int, string>(dictionary, EqualityComparer<string>.Default, defaultValue);
+            var dictionary = new Dictionary<int, string>()
+            {
+                {1, "1"}
+            };
+            var sut = new DictionaryDefaultValueDecorator<int, string>(
+                dictionary,
+                EqualityComparer<string>.Default,
+                "default value");
 
             // When
-            var action = sut.Invoking(s => s.Add(dictionary.Keys.First(), defaultValue));
+            var action = sut.Invoking(s => s.Add(1, "default value"));
 
             // Then
             action.Should().Throw<ArgumentException>().Where(e => e.ParamName == "key");
         }
 
         [Fact]
-        public void GetNotExistingValueTest()
+        public void GetShouldReturnDefaultValueIfItemNotExistTest()
         {
             // Given
-            var defaultValue = _fixture.Create<string>();
-            var sut = new DictionaryDefaultValueDecorator<int, string>(new Dictionary<int, string>(), EqualityComparer<string>.Default, defaultValue);
+            var sut = new DictionaryDefaultValueDecorator<int, string>(
+                new Dictionary<int, string>(),
+                EqualityComparer<string>.Default,
+                "default value");
 
             // When
-            var result = sut[_fixture.Create<int>()];
+            var result = sut[1];
 
             // Then
-            result.Should().Be(defaultValue);
+            result.Should().Be("default value");
         }
 
         [Fact]
-        public void SetDefaultValueTest()
+        public void SetShouldRemoveItemIfValueIsDefaultTest()
         {
             // Given
-            var defaultValue = _fixture.Create<string>();
-            var key1 = _fixture.Create<int>();
-            var key2 = _fixture.Create<int>();
             var dictionary = new Dictionary<int, string>
             {
-                { key1, _fixture.Create<string>() },
-                { key2, defaultValue }
+                {1, "1"},
+                {2, "default value"}
             };
-            var sut = new DictionaryDefaultValueDecorator<int, string>(dictionary, EqualityComparer<string>.Default, defaultValue);
+            var sut = new DictionaryDefaultValueDecorator<int, string>(dictionary, EqualityComparer<string>.Default,
+                "default value");
 
             // When
-            sut[key1] = defaultValue;
+            sut[1] = "default value";
 
             // Then
             dictionary.Should().BeEmpty();

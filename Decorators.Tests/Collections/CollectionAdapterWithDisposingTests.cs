@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoFixture;
 using FluentAssertions;
 using Kladzey.Decorators.Collections;
 using Moq;
@@ -11,15 +10,13 @@ namespace Kladzey.Decorators.Tests.Collections
 {
     public class CollectionAdapterWithDisposingTests
     {
-        private readonly Fixture _fixture = new Fixture();
-
         [Fact]
-        public void AddIsFailedTest()
+        public void AddShouldDisposeItemOnExceptionTest()
         {
             // Given
             var mock = new Mock<IDisposableValue<int>>();
 
-            var exception = _fixture.Create<Exception>();
+            var exception = new Exception();
 
             var internalCollectionMock = new Mock<ICollection<IDisposableValue<int>>>();
             internalCollectionMock.Setup(c => c.Add(It.IsAny<IDisposableValue<int>>())).Throws(exception);
@@ -30,7 +27,7 @@ namespace Kladzey.Decorators.Tests.Collections
                 v => mock.Object);
 
             // When
-            var thrownException = sut.Invoking(s => s.Add(_fixture.Create<int>())).Should().Throw<Exception>().Which;
+            var thrownException = sut.Invoking(s => s.Add(0)).Should().Throw<Exception>().Which;
 
             // Then
             thrownException.Should().BeSameAs(exception);
@@ -41,31 +38,23 @@ namespace Kladzey.Decorators.Tests.Collections
         public void ClearTest()
         {
             // Given
-            var mocks = Enumerable.Range(0, 5)
-                .Select(i =>
-                {
-                    var mock = new Mock<IDisposableValue<int>>();
-                    mock.Setup(x => x.Value).Returns(i);
-                    return mock;
-                })
+            var originalCollection = Enumerable.Range(1, 5)
+                .Select(i => Mock.Of<IDisposableValue<int>>())
                 .ToList();
-            var internalCollection = mocks.Select(m => m.Object).ToList();
+            var internalCollection = originalCollection.ToList();
             var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollection,
                 i => i.Value,
-                v =>
-                {
-                    throw new Exception();
-                });
+                v => throw new Exception("This should not be called."));
 
             // When
             sut.Clear();
 
             // Then
             internalCollection.Should().BeEmpty();
-            foreach (var mock in mocks)
+            foreach (var item in originalCollection)
             {
-                mock.Verify(v => v.Dispose());
+                Mock.Get(item).Verify(v => v.Dispose());
             }
         }
 
@@ -73,31 +62,23 @@ namespace Kladzey.Decorators.Tests.Collections
         public void RemoveTest()
         {
             // Given
-            var mocks = Enumerable.Range(0, 2)
-                .Select(i =>
-                {
-                    var mock = new Mock<IDisposableValue<int>>();
-                    mock.Setup(x => x.Value).Returns(i);
-                    return mock;
-                })
+            var originalCollection = Enumerable.Range(1, 2)
+                .Select(i => Mock.Of<IDisposableValue<int>>(v => v.Value == i))
                 .ToList();
-            var internalCollection = mocks.Select(m => m.Object).ToList();
+            var internalCollection = originalCollection.ToList();
             var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollection,
                 i => i.Value,
-                v =>
-                {
-                    throw new Exception();
-                });
+                v => throw new Exception("This should not be called."));
 
             // When
-            var removeResult = sut.Remove(0);
+            var removeResult = sut.Remove(1);
 
             // Then
             removeResult.Should().BeTrue();
-            internalCollection.Should().BeEquivalentTo(new[] { mocks[1].Object });
-            mocks[0].Verify(v => v.Dispose());
-            mocks[1].Verify(v => v.Dispose(), Times.Never());
+            internalCollection.Select(v => v.Value).Should().BeEquivalentTo(2);
+            Mock.Get(originalCollection[0]).Verify(v => v.Dispose());
+            Mock.Get(originalCollection[1]).Verify(v => v.Dispose(), Times.Never());
         }
     }
 }

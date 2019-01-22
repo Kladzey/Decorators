@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using AutoFixture;
 using FluentAssertions;
 using Kladzey.Decorators.Collections;
 using Xunit;
@@ -9,13 +8,16 @@ namespace Kladzey.Decorators.Tests.Collections
 {
     public class DictionaryKeysToCollectionAdapterTests
     {
-        private readonly Fixture _fixture = new Fixture();
-
         [Fact]
         public void ClearTest()
         {
             // Given
-            var dictionary = _fixture.Create<Dictionary<int, string>>();
+            var dictionary = new Dictionary<int, string>
+            {
+                {1, "1"},
+                {2, "2"},
+                {3, "3"},
+            };
             var sut = CreateSut(dictionary);
 
             // When
@@ -29,7 +31,12 @@ namespace Kladzey.Decorators.Tests.Collections
         public void CopyToTest()
         {
             // Given
-            var dictionary = _fixture.Create<Dictionary<int, string>>();
+            var dictionary = new Dictionary<int, string>
+            {
+                {1, "1"},
+                {2, "2"},
+                {3, "3"},
+            };
             var sut = CreateSut(dictionary);
             var targetArray = new int[dictionary.Count];
 
