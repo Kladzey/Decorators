@@ -29,7 +29,10 @@ namespace Kladzey.Decorators.Collections
             Comparer = equalityComparer ?? throw new ArgumentNullException(nameof(equalityComparer));
         }
 
-        public CollectionAdapter(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric)
+        public CollectionAdapter(
+            ICollection<TInternal> collection,
+            Func<TInternal, TExternal> externalGetter,
+            Func<TExternal, TInternal> internalFabric)
             : this(collection, externalGetter, internalFabric, EqualityComparer<TExternal>.Default)
         {
         }
@@ -59,10 +62,12 @@ namespace Kladzey.Decorators.Collections
             {
                 throw new ArgumentNullException(nameof(array));
             }
+
             if (arrayIndex < 0 || arrayIndex > array.Length || Collection.Count + arrayIndex > array.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex));
             }
+
             var i = arrayIndex;
             foreach (var item in Collection)
             {
@@ -83,15 +88,13 @@ namespace Kladzey.Decorators.Collections
 
         public virtual bool Remove(TExternal item)
         {
-            var internalItemList = Collection
-                .Where(i => Comparer.Equals(ExternalGetter(i), item))
-                .Take(1)
-                .ToList();
-            if (internalItemList.Count == 0)
+            using (var enumerator =
+                Collection
+                    .Where(i => Comparer.Equals(ExternalGetter(i), item))
+                    .GetEnumerator())
             {
-                return false;
+                return enumerator.MoveNext() && Collection.Remove(enumerator.Current);
             }
-            return Collection.Remove(internalItemList[0]);
         }
     }
 }

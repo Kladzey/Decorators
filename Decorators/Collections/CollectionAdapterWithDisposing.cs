@@ -49,21 +49,23 @@ namespace Kladzey.Decorators.Collections
 
         public override bool Remove(TExternal item)
         {
-            var internalItemList = Collection
-                .Where(i => Comparer.Equals(ExternalGetter(i), item))
-                .Take(1)
-                .ToList();
-            if (internalItemList.Count == 0)
+            using (var enumerator =
+                Collection
+                    .Where(i => Comparer.Equals(ExternalGetter(i), item))
+                    .GetEnumerator())
             {
-                return false;
+                if (!enumerator.MoveNext())
+                {
+                    return false;
+                }
+
+                var removeResult = Collection.Remove(enumerator.Current);
+                if (removeResult)
+                {
+                    enumerator.Current?.Dispose();
+                }
+                return removeResult;
             }
-            var internalItem = internalItemList[0];
-            var removeResult = Collection.Remove(internalItem);
-            if (removeResult)
-            {
-                internalItem?.Dispose();
-            }
-            return removeResult;
         }
     }
 }

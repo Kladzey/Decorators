@@ -77,7 +77,7 @@ namespace Kladzey.Decorators.Tests.Collections
         }
 
         [Fact]
-        public void RemoveSHouldReturnFalseIfItemNotExistTest()
+        public void RemoveShouldReturnFalseIfItemNotExistTest()
         {
             // When
             var result = _sut.Remove(4);
