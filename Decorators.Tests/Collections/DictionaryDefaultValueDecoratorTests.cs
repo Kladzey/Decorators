@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Kladzey.Decorators.Collections;
-using Moq;
 using Xunit;
 
 namespace Kladzey.Decorators.Tests.Collections
@@ -26,7 +25,7 @@ namespace Kladzey.Decorators.Tests.Collections
             var action = sut.Invoking(s => s.Add(1, "default value"));
 
             // Then
-            action.Should().Throw<ArgumentException>().Where(e => e.ParamName == "key");
+            action.Should().Throw<ArgumentException>().WithMessage("Duplicate key.\nParameter name: key").Which.ParamName.Should().Be("key");
         }
 
         [Fact]

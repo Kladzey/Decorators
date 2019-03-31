@@ -63,7 +63,9 @@ namespace Kladzey.Decorators.Collections
                 throw new ArgumentNullException(nameof(array));
             }
 
-            if (arrayIndex < 0 || arrayIndex > array.Length || Collection.Count + arrayIndex > array.Length)
+            if (arrayIndex < 0 ||
+                arrayIndex > array.Length||
+                arrayIndex + Collection.Count > array.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex));
             }

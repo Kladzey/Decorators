@@ -63,6 +63,35 @@ namespace Kladzey.Decorators.Tests.Collections
         }
 
         [Fact]
+        public void RemoveShouldReturnFalseIfItemIsNotExistsTest()
+        {
+            // Given
+            var mocks = Enumerable.Range(0, 2)
+                .Select(i =>
+                {
+                    var mock = new Mock<IDisposableValue<int>>();
+                    mock.Setup(x => x.Value).Returns(i);
+                    return mock;
+                })
+                .ToList();
+            var internalCollection = mocks.Select(m => m.Object).ToDictionary(v => v.Value);
+            var sut = new DictionaryKeysToCollectionAdapterWithDisposing<int, IDisposableValue<int>>(
+                internalCollection,
+                v => { throw new Exception(); });
+
+            // When
+            var removeResult = sut.Remove(3);
+
+            // Then
+            removeResult.Should().BeFalse();
+            internalCollection.Should().BeEquivalentTo(new Dictionary<int, IDisposableValue<int>>
+                {{mocks[0].Object.Value, mocks[0].Object},
+                { mocks[1].Object.Value, mocks[1].Object}});
+            mocks[0].Verify(v => v.Dispose(), Times.Never());
+            mocks[1].Verify(v => v.Dispose(), Times.Never());
+        }
+
+        [Fact]
         public void RemoveTest()
         {
             // Given

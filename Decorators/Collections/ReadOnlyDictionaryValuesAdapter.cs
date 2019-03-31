@@ -7,8 +7,8 @@ namespace Kladzey.Decorators.Collections
 {
     public class ReadOnlyDictionaryValuesAdapter<TKey, TValue, TValueInternal> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
-        private readonly Func<TValueInternal, TValue> _externalGetter;
         private readonly IDictionary<TKey, TValueInternal> _dictionary;
+        private readonly Func<TValueInternal, TValue> _externalGetter;
 
         public ReadOnlyDictionaryValuesAdapter(
             IDictionary<TKey, TValueInternal> dictionary,

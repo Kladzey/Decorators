@@ -21,13 +21,11 @@ namespace Kladzey.Decorators.Collections
         {
             _dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
             _validationFunc = validationFunc ?? throw new ArgumentNullException(nameof(validationFunc));
-            if (_dictionary.Any(p => !_validationFunc(p.Key, p.Value)))
-            {
-                throw new ArgumentException("Dictionary contains not valid key/value pairs.", nameof(dictionary));
-            }
         }
 
         public int Count => _dictionary.Count;
+
+        public bool IsAllItemsValid => _dictionary.All(p => _validationFunc(p.Key, p.Value));
 
         public bool IsReadOnly => _dictionary.IsReadOnly;
 

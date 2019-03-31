@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using FluentAssertions;
@@ -35,6 +36,44 @@ namespace Kladzey.Decorators.Tests.Collections
 
             // Then
             _internalCollection.Should().BeEmpty();
+        }
+
+        [Theory]
+        [InlineData(0, 3, 4)]
+        [InlineData(1, 3, 3)]
+        [InlineData(3, 3, -1)]
+        [InlineData(3, 3, 1)]
+        [InlineData(3, 3, 3)]
+        public void CopyToShouldFailOnIndexOutOfRangeTest(int internalCollectionSize, int targetArraySize, int arrayIndex)
+        {
+            // Given
+            _internalCollection.Clear();
+            _internalCollection.AddRange(Enumerable.Range(1, internalCollectionSize).Select(v => (v, v.ToString(CultureInfo.InvariantCulture))));
+            var targetArray = new int[targetArraySize];
+
+            // When
+            var act = _sut.Invoking(s => s.CopyTo(targetArray, arrayIndex));
+
+            // Then
+            act.Should().Throw<ArgumentOutOfRangeException>().Which.ParamName.Should().Be("arrayIndex");
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public void CopyToShouldNotChangeTargetArrayIfInternalIsEmptyTest(int arrayIndex)
+        {
+            // Given
+            _internalCollection.Clear();
+            var targetArray = new int[3];
+
+            // When
+            _sut.CopyTo(targetArray, arrayIndex);
+
+            // Then
+            targetArray.Should().AllBeEquivalentTo(0);
         }
 
         [Fact]
