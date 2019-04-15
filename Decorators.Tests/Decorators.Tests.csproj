@@ -22,10 +22,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Decorators\Decorators.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <DotNetCliToolReference Include="StrykerMutator.DotNetCoreCli" Version="*" />
-    <PackageReference Include="StrykerMutator.DotNetCoreCli" Version="*" />
-  </ItemGroup>
 
 </Project>
