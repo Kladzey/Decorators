@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Kladzey.Decorators.Collections
+namespace Kladzey.Wrappers.Collections
 {
     /// <summary>
     /// More specified version of <see cref="CollectionAdapter{TInternal,TExternal}"/> that exposes dictionary keys.

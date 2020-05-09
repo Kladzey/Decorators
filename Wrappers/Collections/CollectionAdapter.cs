@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kladzey.Decorators.Collections
+namespace Kladzey.Wrappers.Collections
 {
     /// <summary>
     /// This adapter allows to expose one type collection as other type collection.

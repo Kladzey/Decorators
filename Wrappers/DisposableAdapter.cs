@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kladzey.Decorators
+namespace Kladzey.Wrappers
 {
     public sealed class DisposableAdapter<TValue> : IDisposable
     {

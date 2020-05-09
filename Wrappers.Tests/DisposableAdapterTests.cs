@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace Kladzey.Decorators.Tests
+namespace Kladzey.Wrappers.Tests
 {
     public class DisposableAdapterTests
     {

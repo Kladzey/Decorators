@@ -5,7 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Kladzey.Decorators.Tests</RootNamespace>
+    <RootNamespace>Kladzey.Wrappers.Tests</RootNamespace>
+
+    <AssemblyName>Kladzey.Wrappers.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Decorators\Decorators.csproj" />
+    <ProjectReference Include="..\Wrappers\Wrappers.csproj" />
   </ItemGroup>
 
 </Project>

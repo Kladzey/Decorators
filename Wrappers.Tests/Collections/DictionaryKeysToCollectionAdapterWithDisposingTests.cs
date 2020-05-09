@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using Kladzey.Decorators.Collections;
+using Kladzey.Wrappers.Collections;
 using Moq;
 using Xunit;
 
-namespace Kladzey.Decorators.Tests.Collections
+namespace Kladzey.Wrappers.Tests.Collections
 {
     public class DictionaryKeysToCollectionAdapterWithDisposingTests
     {

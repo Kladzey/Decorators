@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 
-namespace Kladzey.Decorators.Tests.TestUtils
+namespace Kladzey.Wrappers.Tests.TestUtils
 {
     public static class Extensions
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Kladzey.Decorators.Collections;
+using Kladzey.Wrappers.Collections;
 using Xunit;
 
-namespace Kladzey.Decorators.Tests.Collections
+namespace Kladzey.Wrappers.Tests.Collections
 {
     public class DictionaryValidationDecoratorTests
     {

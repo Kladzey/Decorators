@@ -2,10 +2,10 @@
 using System.Globalization;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Kladzey.Decorators.Collections;
+using Kladzey.Wrappers.Collections;
 using Xunit;
 
-namespace Kladzey.Decorators.Tests.Collections
+namespace Kladzey.Wrappers.Tests.Collections
 {
     public class ReadOnlyDictionaryValuesAdapterTests
     {

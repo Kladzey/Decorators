@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Kladzey.Decorators.Collections
+namespace Kladzey.Wrappers.Collections
 {
     /// <summary>
     /// Allows to control access to internal dictionary.

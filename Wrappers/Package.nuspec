@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Kladzey.Decorators</id>
+    <id>Kladzey.Wrappers</id>
     <version>0.0.0</version>
     <authors>Kladzey</authors>
     <owners>Kladzey</owners>
-    <licenseUrl>https://github.com/Kladzey/Decorators</licenseUrl>
-    <projectUrl>https://github.com/Kladzey/Decorators</projectUrl>
-    <iconUrl>https://github.com/Kladzey/Decorators</iconUrl>
+    <licenseUrl>https://github.com/Kladzey/Wrappers</licenseUrl>
+    <projectUrl>https://github.com/Kladzey/Wrappers</projectUrl>
+    <iconUrl>https://github.com/Kladzey/Wrappers</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description></description>
     <releaseNotes></releaseNotes>

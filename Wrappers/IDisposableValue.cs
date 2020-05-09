@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kladzey.Decorators
+namespace Kladzey.Wrappers
 {
     public interface IDisposableValue<out T> : IDisposable
     {

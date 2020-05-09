@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kladzey.Decorators.Collections
+namespace Kladzey.Wrappers.Collections
 {
     public class DictionaryDefaultValueDecorator<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {

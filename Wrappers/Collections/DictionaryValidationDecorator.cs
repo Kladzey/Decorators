@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kladzey.Decorators.Collections
+namespace Kladzey.Wrappers.Collections
 {
     /// <summary>
     /// Allows to forbid adding of invalid key/value pairs to dictionary.

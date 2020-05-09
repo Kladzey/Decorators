@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Kladzey.Decorators.Collections;
+using Kladzey.Wrappers.Collections;
 
-namespace Kladzey.Decorators
+namespace Kladzey.Wrappers
 {
-    public static class DecoratorsExtensions
+    public static class WrappersExtensions
     {
         public static IReadOnlyDictionary<TKey, TValue> AsReadOnlyDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
         {

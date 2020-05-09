@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kladzey.Decorators
+namespace Kladzey.Wrappers
 {
     /// <summary>
     /// Base logic for access decorators.

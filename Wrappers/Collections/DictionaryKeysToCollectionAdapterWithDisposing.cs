@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Kladzey.Decorators.Collections
+namespace Kladzey.Wrappers.Collections
 {
     /// <summary>
     /// The variation of <see cref="DictionaryKeysToCollectionAdapter{TKey, TValue}"/> that disposes values on remove.
