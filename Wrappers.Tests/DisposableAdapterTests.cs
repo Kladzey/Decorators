@@ -23,7 +23,7 @@ namespace Kladzey.Wrappers.Tests
         public void ValueTest()
         {
             // Given
-            var sut = new DisposableAdapter<int>(1, v => { });
+            var sut = new DisposableAdapter<int>(1, _ => { });
 
             // When
             var result = sut.Value;

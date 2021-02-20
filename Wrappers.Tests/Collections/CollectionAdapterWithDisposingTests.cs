@@ -24,7 +24,7 @@ namespace Kladzey.Wrappers.Tests.Collections
             var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollectionMock.Object,
                 i => i.Value,
-                v => mock.Object);
+                _ => mock.Object);
 
             // When
             var thrownException = sut.Invoking(s => s.Add(0)).Should().Throw<Exception>().Which;
@@ -39,18 +39,19 @@ namespace Kladzey.Wrappers.Tests.Collections
         {
             // Given
             var originalCollection = Enumerable.Range(1, 5)
-                .Select(i => Mock.Of<IDisposableValue<int>>())
+                .Select(_ => Mock.Of<IDisposableValue<int>>())
                 .ToList();
             var internalCollection = originalCollection.ToList();
             var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollection,
                 i => i.Value,
-                v => throw new Exception("This should not be called."));
+                _ => throw new Exception("This should not be called."));
 
             // When
             sut.Clear();
 
             // Then
+            sut.Should().BeEmpty();
             internalCollection.Should().BeEmpty();
             foreach (var item in originalCollection)
             {
@@ -69,7 +70,7 @@ namespace Kladzey.Wrappers.Tests.Collections
             var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollection,
                 i => i.Value,
-                v => throw new Exception("This should not be called."));
+                _ => throw new Exception("This should not be called."));
 
             // When
             var removeResult = sut.Remove(3);
@@ -94,7 +95,7 @@ namespace Kladzey.Wrappers.Tests.Collections
             var sut = new CollectionAdapterWithDisposing<IDisposableValue<int>, int>(
                 internalCollection,
                 i => i.Value,
-                v => throw new Exception("This should not be called."));
+                _ => throw new Exception("This should not be called."));
 
             // When
             var removeResult = sut.Remove(1);

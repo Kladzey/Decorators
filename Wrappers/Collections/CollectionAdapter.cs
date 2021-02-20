@@ -64,7 +64,7 @@ namespace Kladzey.Wrappers.Collections
             }
 
             if (arrayIndex < 0 ||
-                arrayIndex > array.Length||
+                arrayIndex > array.Length ||
                 arrayIndex + Collection.Count > array.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex));
@@ -90,13 +90,10 @@ namespace Kladzey.Wrappers.Collections
 
         public virtual bool Remove(TExternal item)
         {
-            using (var enumerator =
-                Collection
-                    .Where(i => Comparer.Equals(ExternalGetter(i), item))
-                    .GetEnumerator())
-            {
-                return enumerator.MoveNext() && Collection.Remove(enumerator.Current);
-            }
+            using var enumerator = Collection
+                .Where(i => Comparer.Equals(ExternalGetter(i), item))
+                .GetEnumerator();
+            return enumerator.MoveNext() && Collection.Remove(enumerator.Current);
         }
     }
 }

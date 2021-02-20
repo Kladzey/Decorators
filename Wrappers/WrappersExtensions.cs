@@ -7,7 +7,8 @@ namespace Kladzey.Wrappers
 {
     public static class WrappersExtensions
     {
-        public static IReadOnlyDictionary<TKey, TValue> AsReadOnlyDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        public static IReadOnlyDictionary<TKey, TValue> AsReadOnlyDictionary<TKey, TValue>(
+            this IDictionary<TKey, TValue> dictionary)
         {
             return dictionary as IReadOnlyDictionary<TKey, TValue> ?? new ReadOnlyDictionary<TKey, TValue>(dictionary);
         }
@@ -40,7 +41,8 @@ namespace Kladzey.Wrappers
             Func<TExternal, TInternal> internalFabric,
             IEqualityComparer<TExternal> equalityComparer)
         {
-            return new CollectionAdapter<TInternal, TExternal>(collection, externalGetter, internalFabric, equalityComparer);
+            return new CollectionAdapter<TInternal, TExternal>(collection, externalGetter, internalFabric,
+                equalityComparer);
         }
 
         public static ICollection<TExternal> WrapToCollectionWithDisposing<TInternal, TExternal>(
@@ -57,15 +59,19 @@ namespace Kladzey.Wrappers
             Func<TExternal, TInternal> internalFabric,
             IEqualityComparer<TExternal> equalityComparer) where TInternal : IDisposable
         {
-            return new CollectionAdapterWithDisposing<TInternal, TExternal>(collection, externalGetter, internalFabric, equalityComparer);
+            return new CollectionAdapterWithDisposing<TInternal, TExternal>(collection, externalGetter, internalFabric,
+                equalityComparer);
         }
 
-        public static IDictionary<TKey, TValue> WrapToReadOnlyDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        public static IDictionary<TKey, TValue> WrapToReadOnlyDictionary<TKey, TValue>(
+            this IDictionary<TKey, TValue> dictionary)
         {
             return new ReadOnlyDictionary<TKey, TValue>(dictionary);
         }
 
-        public static IReadOnlyDictionary<TKey, TValue> WrapToReadOnlyDictionary<TKey, TValue, TValueInternal>(this IDictionary<TKey, TValueInternal> dictionary, Func<TValueInternal, TValue> externalGetter)
+        public static IReadOnlyDictionary<TKey, TValue> WrapToReadOnlyDictionary<TKey, TValue, TValueInternal>(
+            this IDictionary<TKey, TValueInternal> dictionary,
+            Func<TValueInternal, TValue> externalGetter)
         {
             return new ReadOnlyDictionaryValuesAdapter<TKey, TValue, TValueInternal>(dictionary, externalGetter);
         }
@@ -77,12 +83,16 @@ namespace Kladzey.Wrappers
             return new DictionaryAccessDecorator<TKey, TValue>(dictionary, isEnabledFunc);
         }
 
-        public static IDictionary<TKey, TValue> WrapWithDefaultValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        public static IDictionary<TKey, TValue> WrapWithDefaultValue<TKey, TValue>(
+            this IDictionary<TKey, TValue> dictionary,
+            TValue defaultValue)
         {
-            return new DictionaryDefaultValueDecorator<TKey, TValue>(dictionary);
+            return new DictionaryDefaultValueDecorator<TKey, TValue>(dictionary, defaultValue);
         }
 
-        public static IDictionary<TKey, TValue> WrapWithValidation<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<TKey, TValue, bool> validationFunc)
+        public static IDictionary<TKey, TValue> WrapWithValidation<TKey, TValue>(
+            this IDictionary<TKey, TValue> dictionary,
+            Func<TKey, TValue, bool> validationFunc)
         {
             return new DictionaryValidationDecorator<TKey, TValue>(dictionary, validationFunc);
         }

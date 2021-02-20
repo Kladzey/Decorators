@@ -30,8 +30,8 @@ namespace Kladzey.Wrappers.Tests.Collections
                 yield return Action(s => s.Remove(new KeyValuePair<int, string>(1, "1")));
                 yield return Action(s => s.TryGetValue(1, out _));
 
-                object[] Action(Action<DictionaryAccessDecorator<int, string>> act) => new object[] {act};
-                object[] Func<T>(Func<DictionaryAccessDecorator<int, string>, T> act) => Action(s => act(s));
+                static object[] Action(Action<DictionaryAccessDecorator<int, string>> act) => new object[] {act};
+                static object[] Func<T>(Func<DictionaryAccessDecorator<int, string>, T> act) => Action(s => act(s));
             }
         }
 
@@ -55,12 +55,7 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void EnabledTest()
         {
             // Given
-            var dictionary = new Dictionary<int, string>
-            {
-                {0, "0"},
-                {1, "1"},
-                {2, "2"},
-            };
+            var dictionary = new Dictionary<int, string> {{0, "0"}, {1, "1"}, {2, "2"},};
 
             // When
             var sut = new DictionaryAccessDecorator<int, string>(dictionary, () => true);

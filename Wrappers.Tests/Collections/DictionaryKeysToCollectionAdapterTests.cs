@@ -12,12 +12,7 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void ClearTest()
         {
             // Given
-            var dictionary = new Dictionary<int, string>
-            {
-                {1, "1"},
-                {2, "2"},
-                {3, "3"},
-            };
+            var dictionary = new Dictionary<int, string> {{1, "1"}, {2, "2"}, {3, "3"},};
             var sut = CreateSut(dictionary);
 
             // When
@@ -31,12 +26,7 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void CopyToTest()
         {
             // Given
-            var dictionary = new Dictionary<int, string>
-            {
-                {1, "1"},
-                {2, "2"},
-                {3, "3"},
-            };
+            var dictionary = new Dictionary<int, string> {{1, "1"}, {2, "2"}, {3, "3"},};
             var sut = CreateSut(dictionary);
             var targetArray = new int[dictionary.Count];
 
@@ -72,19 +62,14 @@ namespace Kladzey.Wrappers.Tests.Collections
             notContainsResult.Should().BeFalse();
             removedResult.Should().BeTrue();
             notRemovedResult.Should().BeFalse();
-            sut.Should().Equal(new[] { 1, 3, 2, 5 });
-            dictionary.Should().BeEquivalentTo(new Dictionary<int, string>()
-            {
-                { 1, "1" },
-                { 3, "3" },
-                { 2, "2" },
-                { 5, "5" }
-            });
+            sut.Should().Equal(new[] {1, 3, 2, 5});
+            dictionary.Should().BeEquivalentTo(new Dictionary<int, string>() {{1, "1"}, {3, "3"}, {2, "2"}, {5, "5"}});
         }
 
         private static DictionaryKeysToCollectionAdapter<int, string> CreateSut(IDictionary<int, string> dictionary)
         {
-            return new DictionaryKeysToCollectionAdapter<int, string>(dictionary, key => key.ToString(CultureInfo.InvariantCulture));
+            return new DictionaryKeysToCollectionAdapter<int, string>(dictionary,
+                key => key.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

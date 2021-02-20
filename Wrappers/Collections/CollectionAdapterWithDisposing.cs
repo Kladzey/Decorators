@@ -9,18 +9,23 @@ namespace Kladzey.Wrappers.Collections
     /// </summary>
     /// <typeparam name="TInternal">The <see cref="IDisposable"/> type of items in internal collection.</typeparam>
     /// <typeparam name="TExternal">The type of exposed items.</typeparam>
-    public class CollectionAdapterWithDisposing<TInternal, TExternal> : CollectionAdapter<TInternal, TExternal> where TInternal : IDisposable
+    public class CollectionAdapterWithDisposing<TInternal, TExternal> : CollectionAdapter<TInternal, TExternal>
+        where TInternal : IDisposable
     {
         public CollectionAdapterWithDisposing(
             ICollection<TInternal> collection,
             Func<TInternal, TExternal> externalGetter,
             Func<TExternal, TInternal> internalFabric,
-            IEqualityComparer<TExternal> equalityComparer) : base(collection, externalGetter, internalFabric, equalityComparer)
+            IEqualityComparer<TExternal> equalityComparer) :
+            base(collection, externalGetter, internalFabric, equalityComparer)
         {
         }
 
-        public CollectionAdapterWithDisposing(ICollection<TInternal> collection, Func<TInternal, TExternal> externalGetter, Func<TExternal, TInternal> internalFabric)
-           : this(collection, externalGetter, internalFabric, EqualityComparer<TExternal>.Default)
+        public CollectionAdapterWithDisposing(
+            ICollection<TInternal> collection,
+            Func<TInternal, TExternal> externalGetter,
+            Func<TExternal, TInternal> internalFabric) :
+            this(collection, externalGetter, internalFabric, EqualityComparer<TExternal>.Default)
         {
         }
 
@@ -44,28 +49,27 @@ namespace Kladzey.Wrappers.Collections
             {
                 item?.Dispose();
             }
+
             Collection.Clear();
         }
 
         public override bool Remove(TExternal item)
         {
-            using (var enumerator =
-                Collection
-                    .Where(i => Comparer.Equals(ExternalGetter(i), item))
-                    .GetEnumerator())
+            using var enumerator = Collection
+                .Where(i => Comparer.Equals(ExternalGetter(i), item))
+                .GetEnumerator();
+            if (!enumerator.MoveNext())
             {
-                if (!enumerator.MoveNext())
-                {
-                    return false;
-                }
-
-                var removeResult = Collection.Remove(enumerator.Current);
-                if (removeResult)
-                {
-                    enumerator.Current?.Dispose();
-                }
-                return removeResult;
+                return false;
             }
+
+            var removeResult = Collection.Remove(enumerator.Current);
+            if (removeResult)
+            {
+                enumerator.Current?.Dispose();
+            }
+
+            return removeResult;
         }
     }
 }

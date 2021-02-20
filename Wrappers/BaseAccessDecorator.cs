@@ -7,18 +7,18 @@ namespace Kladzey.Wrappers
     /// </summary>
     public abstract class BaseAccessDecorator
     {
-        private readonly Func<bool> _isEnabledFunc;
+        private readonly Func<bool> isEnabledFunc;
 
         protected BaseAccessDecorator(Func<bool> isEnabledFunc)
         {
-            _isEnabledFunc = isEnabledFunc ?? throw new ArgumentNullException(nameof(isEnabledFunc));
+            this.isEnabledFunc = isEnabledFunc ?? throw new ArgumentNullException(nameof(isEnabledFunc));
         }
 
-        public bool IsEnabled => _isEnabledFunc();
+        public bool IsEnabled => isEnabledFunc();
 
         protected void EnsureEnabled()
         {
-            if (!_isEnabledFunc())
+            if (!isEnabledFunc())
             {
                 throw new InvalidOperationException("Access to object is disabled.");
             }

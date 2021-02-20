@@ -24,7 +24,7 @@ namespace Kladzey.Wrappers.Tests.Collections
 
             var sut = new DictionaryKeysToCollectionAdapterWithDisposing<int, IDisposableValue<int>>(
                 internalDictionaryMock.Object,
-                v => mock.Object);
+                _ => mock.Object);
 
             // When
             var thrownException = sut.Invoking(s => s.Add(1)).Should().Throw<Exception>().Which;
@@ -49,12 +49,13 @@ namespace Kladzey.Wrappers.Tests.Collections
             var internalDictionary = mocks.Select(m => m.Object).ToDictionary(v => v.Value);
             var sut = new DictionaryKeysToCollectionAdapterWithDisposing<int, IDisposableValue<int>>(
                 internalDictionary,
-                v => { throw new Exception(); });
+                _ => throw new Exception());
 
             // When
             sut.Clear();
 
             // Then
+            sut.Should().BeEmpty();
             internalDictionary.Should().BeEmpty();
             foreach (var mock in mocks)
             {
@@ -77,7 +78,7 @@ namespace Kladzey.Wrappers.Tests.Collections
             var internalCollection = mocks.Select(m => m.Object).ToDictionary(v => v.Value);
             var sut = new DictionaryKeysToCollectionAdapterWithDisposing<int, IDisposableValue<int>>(
                 internalCollection,
-                v => { throw new Exception(); });
+                _ => throw new Exception());
 
             // When
             var removeResult = sut.Remove(3);
@@ -85,8 +86,9 @@ namespace Kladzey.Wrappers.Tests.Collections
             // Then
             removeResult.Should().BeFalse();
             internalCollection.Should().BeEquivalentTo(new Dictionary<int, IDisposableValue<int>>
-                {{mocks[0].Object.Value, mocks[0].Object},
-                { mocks[1].Object.Value, mocks[1].Object}});
+            {
+                {mocks[0].Object.Value, mocks[0].Object}, {mocks[1].Object.Value, mocks[1].Object}
+            });
             mocks[0].Verify(v => v.Dispose(), Times.Never());
             mocks[1].Verify(v => v.Dispose(), Times.Never());
         }
@@ -106,7 +108,7 @@ namespace Kladzey.Wrappers.Tests.Collections
             var internalCollection = mocks.Select(m => m.Object).ToDictionary(v => v.Value);
             var sut = new DictionaryKeysToCollectionAdapterWithDisposing<int, IDisposableValue<int>>(
                 internalCollection,
-                v => { throw new Exception(); });
+                _ => throw new Exception());
 
             // When
             var removeResult = sut.Remove(0);
@@ -114,7 +116,9 @@ namespace Kladzey.Wrappers.Tests.Collections
             // Then
             removeResult.Should().BeTrue();
             internalCollection.Should().BeEquivalentTo(new Dictionary<int, IDisposableValue<int>>
-                {{mocks[1].Object.Value, mocks[1].Object}});
+            {
+                {mocks[1].Object.Value, mocks[1].Object}
+            });
             mocks[0].Verify(v => v.Dispose());
             mocks[1].Verify(v => v.Dispose(), Times.Never());
         }

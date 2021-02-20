@@ -5,41 +5,43 @@ using System.Linq;
 
 namespace Kladzey.Wrappers.Collections
 {
-    public class ReadOnlyDictionaryValuesAdapter<TKey, TValue, TValueInternal> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
+    public class ReadOnlyDictionaryValuesAdapter<TKey, TValue, TValueInternal> :
+        IDictionary<TKey, TValue>,
+        IReadOnlyDictionary<TKey, TValue>
     {
-        private readonly IDictionary<TKey, TValueInternal> _dictionary;
-        private readonly Func<TValueInternal, TValue> _externalGetter;
+        private readonly IDictionary<TKey, TValueInternal> dictionary;
+        private readonly Func<TValueInternal, TValue> externalGetter;
 
         public ReadOnlyDictionaryValuesAdapter(
             IDictionary<TKey, TValueInternal> dictionary,
             Func<TValueInternal, TValue> externalGetter)
         {
-            _dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
-            _externalGetter = externalGetter ?? throw new ArgumentNullException(nameof(externalGetter));
+            this.dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
+            this.externalGetter = externalGetter ?? throw new ArgumentNullException(nameof(externalGetter));
         }
 
-        public int Count => _dictionary.Count;
+        public int Count => dictionary.Count;
 
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => true;
 
-        public IEnumerable<TKey> Keys => _dictionary.Keys;
+        public IEnumerable<TKey> Keys => dictionary.Keys;
 
         ICollection<TKey> IDictionary<TKey, TValue>.Keys
         {
             get
             {
-                var keys = _dictionary.Keys;
+                var keys = dictionary.Keys;
                 return keys.IsReadOnly ? keys : keys.ToList();
             }
         }
 
-        public IEnumerable<TValue> Values => _dictionary.Values.Select(_externalGetter);
+        public IEnumerable<TValue> Values => dictionary.Values.Select(externalGetter);
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values.ToList();
 
         public TValue this[TKey key]
         {
-            get => _externalGetter(_dictionary[key]);
+            get => externalGetter(dictionary[key]);
             set => throw new InvalidOperationException();
         }
 
@@ -60,16 +62,13 @@ namespace Kladzey.Wrappers.Collections
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
-            if (!_dictionary.TryGetValue(item.Key, out var value))
-            {
-                return false;
-            }
-            return EqualityComparer<TValue>.Default.Equals(item.Value, _externalGetter(value));
+            return dictionary.TryGetValue(item.Key, out var value) &&
+                   EqualityComparer<TValue>.Default.Equals(item.Value, externalGetter(value));
         }
 
         public bool ContainsKey(TKey key)
         {
-            return _dictionary.ContainsKey(key);
+            return dictionary.ContainsKey(key);
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -79,8 +78,8 @@ namespace Kladzey.Wrappers.Collections
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return _dictionary
-                .Select(p => new KeyValuePair<TKey, TValue>(p.Key, _externalGetter(p.Value))).GetEnumerator();
+            return dictionary
+                .Select(p => new KeyValuePair<TKey, TValue>(p.Key, externalGetter(p.Value))).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -100,12 +99,13 @@ namespace Kladzey.Wrappers.Collections
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (!_dictionary.TryGetValue(key, out var internalValue))
+            if (!dictionary.TryGetValue(key, out var internalValue))
             {
-                value = default;
+                value = default!;
                 return false;
             }
-            value = _externalGetter(internalValue);
+
+            value = externalGetter(internalValue);
             return true;
         }
     }

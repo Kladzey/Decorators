@@ -8,9 +8,12 @@ namespace Kladzey.Wrappers.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The <see cref="IDisposable"/> type of values in the dictionary.</typeparam>
-    public class DictionaryKeysToCollectionAdapterWithDisposing<TKey, TValue> : DictionaryKeysToCollectionAdapter<TKey, TValue> where TValue : IDisposable
+    public class DictionaryKeysToCollectionAdapterWithDisposing<TKey, TValue> :
+        DictionaryKeysToCollectionAdapter<TKey, TValue>
+        where TValue : IDisposable
     {
-        public DictionaryKeysToCollectionAdapterWithDisposing(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> valueFabric) : base(dictionary, valueFabric)
+        public DictionaryKeysToCollectionAdapterWithDisposing(IDictionary<TKey, TValue> dictionary,
+            Func<TKey, TValue> valueFabric) : base(dictionary, valueFabric)
         {
         }
 
@@ -34,6 +37,7 @@ namespace Kladzey.Wrappers.Collections
             {
                 item.Dispose();
             }
+
             Dictionary.Clear();
         }
 
@@ -43,11 +47,13 @@ namespace Kladzey.Wrappers.Collections
             {
                 return false;
             }
+
             var removeResult = Dictionary.Remove(item);
             if (removeResult)
             {
                 value?.Dispose();
             }
+
             return removeResult;
         }
     }

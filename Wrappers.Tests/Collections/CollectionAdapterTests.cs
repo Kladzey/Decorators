@@ -11,19 +11,14 @@ namespace Kladzey.Wrappers.Tests.Collections
 {
     public class CollectionAdapterTests
     {
-        private readonly List<(int Value, string ValueString)> _internalCollection;
-        private readonly CollectionAdapter<(int Value, string ValueString), int> _sut;
+        private readonly List<(int Value, string ValueString)> internalCollection;
+        private readonly CollectionAdapter<(int Value, string ValueString), int> sut;
 
         public CollectionAdapterTests()
         {
-            _internalCollection = new List<(int Value, string ValueString)>
-            {
-                (1, "1"),
-                (2, "2"),
-                (3, "3"),
-            };
-            _sut = new CollectionAdapter<(int Value, string ValueString), int>(
-                _internalCollection,
+            internalCollection = new List<(int Value, string ValueString)> {(1, "1"), (2, "2"), (3, "3"),};
+            sut = new CollectionAdapter<(int Value, string ValueString), int>(
+                internalCollection,
                 i => i.Value,
                 v => (v, v.ToString(CultureInfo.InvariantCulture)));
         }
@@ -32,10 +27,10 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void ClearTest()
         {
             // When
-            _sut.Clear();
+            sut.Clear();
 
             // Then
-            _internalCollection.Should().BeEmpty();
+            internalCollection.Should().BeEmpty();
         }
 
         [Theory]
@@ -44,15 +39,17 @@ namespace Kladzey.Wrappers.Tests.Collections
         [InlineData(3, 3, -1)]
         [InlineData(3, 3, 1)]
         [InlineData(3, 3, 3)]
-        public void CopyToShouldFailOnIndexOutOfRangeTest(int internalCollectionSize, int targetArraySize, int arrayIndex)
+        public void CopyToShouldFailOnIndexOutOfRangeTest(int internalCollectionSize, int targetArraySize,
+            int arrayIndex)
         {
             // Given
-            _internalCollection.Clear();
-            _internalCollection.AddRange(Enumerable.Range(1, internalCollectionSize).Select(v => (v, v.ToString(CultureInfo.InvariantCulture))));
+            internalCollection.Clear();
+            internalCollection.AddRange(Enumerable.Range(1, internalCollectionSize)
+                .Select(v => (v, v.ToString(CultureInfo.InvariantCulture))));
             var targetArray = new int[targetArraySize];
 
             // When
-            var act = _sut.Invoking(s => s.CopyTo(targetArray, arrayIndex));
+            var act = sut.Invoking(s => s.CopyTo(targetArray, arrayIndex));
 
             // Then
             act.Should().Throw<ArgumentOutOfRangeException>().Which.ParamName.Should().Be("arrayIndex");
@@ -66,11 +63,11 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void CopyToShouldNotChangeTargetArrayIfInternalIsEmptyTest(int arrayIndex)
         {
             // Given
-            _internalCollection.Clear();
+            internalCollection.Clear();
             var targetArray = new int[3];
 
             // When
-            _sut.CopyTo(targetArray, arrayIndex);
+            sut.CopyTo(targetArray, arrayIndex);
 
             // Then
             targetArray.Should().AllBeEquivalentTo(0);
@@ -80,52 +77,52 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void CopyToTest()
         {
             // Given
-            var targetArray = new int[_internalCollection.Count];
+            var targetArray = new int[internalCollection.Count];
 
             // When
-            _sut.CopyTo(targetArray, 0);
+            sut.CopyTo(targetArray, 0);
 
             // Then
-            targetArray.Should().Equal(_internalCollection.Select(i => i.Value));
+            targetArray.Should().Equal(internalCollection.Select(i => i.Value));
         }
 
         [Fact]
         public void MainTest()
         {
             // When
-            _sut.Clear();
-            _sut.Add(1);
-            _sut.Add(3);
-            _sut.Add(2);
-            _sut.Add(4);
-            _sut.Add(5);
-            var removedResult = _sut.Remove(4);
-            var notRemovedResult = _sut.Remove(6);
-            var containsResult = _sut.Contains(2);
-            var notContainsResult = _sut.Contains(4);
+            sut.Clear();
+            sut.Add(1);
+            sut.Add(3);
+            sut.Add(2);
+            sut.Add(4);
+            sut.Add(5);
+            var removedResult = sut.Remove(4);
+            var notRemovedResult = sut.Remove(6);
+            var containsResult = sut.Contains(2);
+            var notContainsResult = sut.Contains(4);
 
             // Then
-            _sut.Count.Should().Be(4);
-            _sut.IsReadOnly.Should().BeFalse();
+            sut.Count.Should().Be(4);
+            sut.IsReadOnly.Should().BeFalse();
             containsResult.Should().BeTrue();
             notContainsResult.Should().BeFalse();
             removedResult.Should().BeTrue();
             notRemovedResult.Should().BeFalse();
-            _sut.Should().Equal(1, 3, 2, 5);
-            _internalCollection.Should().Equal((1, "1"), (3, "3"), (2, "2"), (5, "5"));
+            sut.Should().Equal(1, 3, 2, 5);
+            internalCollection.Should().Equal((1, "1"), (3, "3"), (2, "2"), (5, "5"));
         }
 
         [Fact]
         public void RemoveShouldReturnFalseIfItemNotExistTest()
         {
             // When
-            var result = _sut.Remove(4);
+            var result = sut.Remove(4);
 
             // Then
             using (new AssertionScope())
             {
                 result.Should().BeFalse();
-                _internalCollection.Should().BeEquivalentTo((1, "1"), (2, "2"), (3, "3"));
+                internalCollection.Should().BeEquivalentTo((1, "1"), (2, "2"), (3, "3"));
             }
         }
 
@@ -133,13 +130,13 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void RemoveTest()
         {
             // When
-            var result = _sut.Remove(2);
+            var result = sut.Remove(2);
 
             // Then
             using (new AssertionScope())
             {
                 result.Should().BeTrue();
-                _internalCollection.Should().BeEquivalentTo((1, "1"), (3, "3"));
+                internalCollection.Should().BeEquivalentTo((1, "1"), (3, "3"));
             }
         }
     }

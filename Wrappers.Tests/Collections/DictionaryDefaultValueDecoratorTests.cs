@@ -12,10 +12,7 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void AddShouldNotAddDefaultValueButAnywayShouldThrowExceptionIfItemExistTest()
         {
             // Given
-            var dictionary = new Dictionary<int, string>()
-            {
-                {1, "1"}
-            };
+            var dictionary = new Dictionary<int, string> {{1, "1"}};
             var sut = new DictionaryDefaultValueDecorator<int, string>(
                 dictionary,
                 EqualityComparer<string>.Default,
@@ -25,7 +22,7 @@ namespace Kladzey.Wrappers.Tests.Collections
             var action = sut.Invoking(s => s.Add(1, "default value"));
 
             // Then
-            action.Should().Throw<ArgumentException>().WithMessage("Duplicate key.\nParameter name: key").Which.ParamName.Should().Be("key");
+            action.Should().Throw<ArgumentException>().WithMessage("Duplicate key*").Which.ParamName.Should().Be("key");
         }
 
         [Fact]
@@ -48,11 +45,7 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void SetShouldRemoveItemIfValueIsDefaultTest()
         {
             // Given
-            var dictionary = new Dictionary<int, string>
-            {
-                {1, "1"},
-                {2, "default value"}
-            };
+            var dictionary = new Dictionary<int, string> {{1, "1"}, {2, "default value"}};
             var sut = new DictionaryDefaultValueDecorator<int, string>(dictionary, EqualityComparer<string>.Default,
                 "default value");
 
@@ -60,6 +53,7 @@ namespace Kladzey.Wrappers.Tests.Collections
             sut[1] = "default value";
 
             // Then
+            sut.Should().BeEmpty();
             dictionary.Should().BeEmpty();
         }
     }

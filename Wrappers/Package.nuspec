@@ -9,10 +9,10 @@
     <projectUrl>https://github.com/Kladzey/Wrappers</projectUrl>
     <iconUrl>https://github.com/Kladzey/Wrappers</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description></description>
-    <releaseNotes></releaseNotes>
+    <description/>
+    <releaseNotes/>
     <copyright>Copyright 2018</copyright>
-    <tags></tags>
+    <tags/>
     <dependencies>
     </dependencies>
   </metadata>

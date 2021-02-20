@@ -15,12 +15,13 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void ContainsShouldReturnFalseIfNotContainsTest(int key)
         {
             // Given
-            var sut = new ReadOnlyDictionaryValuesAdapter<int, string, int>(
-                new Dictionary<int, int>() { { 0, 0 } },
+            var sut = new ReadOnlyDictionaryValuesAdapter<int, string?, int>(
+                new Dictionary<int, int> {{0, 0}},
                 v => v.ToString(CultureInfo.InvariantCulture));
 
             // When
-            var result = ((ICollection<KeyValuePair<int, string>>)sut).Contains(new KeyValuePair<int, string>(key, null));
+            var result =
+                ((ICollection<KeyValuePair<int, string?>>)sut).Contains(new KeyValuePair<int, string?>(key, null));
 
             // Then
             result.Should().BeFalse();
@@ -30,7 +31,8 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void IsReadOnlyTest()
         {
             // Given
-            var sut = new ReadOnlyDictionaryValuesAdapter<int, string, int>(new Dictionary<int, int>(), v => v.ToString(CultureInfo.InvariantCulture));
+            var sut = new ReadOnlyDictionaryValuesAdapter<int, string, int>(new Dictionary<int, int>(),
+                v => v.ToString(CultureInfo.InvariantCulture));
 
             // When
             var result = ((ICollection<KeyValuePair<int, string>>)sut).IsReadOnly;
@@ -46,7 +48,7 @@ namespace Kladzey.Wrappers.Tests.Collections
         {
             // Given
             var sut = new ReadOnlyDictionaryValuesAdapter<int, string, int>(
-                new Dictionary<int, int>() { { 0, 1 } },
+                new Dictionary<int, int> {{0, 1}},
                 v => v.ToString(CultureInfo.InvariantCulture));
 
             // When

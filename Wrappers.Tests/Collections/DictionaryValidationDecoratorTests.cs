@@ -12,16 +12,19 @@ namespace Kladzey.Wrappers.Tests.Collections
         public void AddingNotValidValueTest()
         {
             // Given
-            var sut = new DictionaryValidationDecorator<int, string>(
-                new Dictionary<int, string>(),
+            var sut = new DictionaryValidationDecorator<int, string?>(
+                new Dictionary<int, string?>(),
                 (key, value) => value != null);
 
             // When
             var actions = new[]
             {
-                sut.Invoking(s => s[1] = null),
+                sut.Invoking(s =>
+                {
+                    s[1] = null;
+                }),
                 sut.Invoking(s => s.Add(1, null)),
-                sut.Invoking(s => s.Add(new KeyValuePair<int, string>(1, null)))
+                sut.Invoking(s => s.Add(new KeyValuePair<int, string?>(1, null))),
             };
 
             // Then
